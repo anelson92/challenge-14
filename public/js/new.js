@@ -1,14 +1,14 @@
-const newBlogForm = document.querySelector('.new-blog-form')
+const newPostForm = document.querySelector('.new-post-form')
 
-const newBlogHandle = async (e) => {
+const newPostHandle = async (e) => {
     e.preventDefault();
 
     const userId = document.getElementById('userId').dataset.user;
-    const title = document.getElementById('blog-title').value.trim();
-    const body = document.getElementById('blog-body').value;
+    const title = document.getElementById('post-title').value.trim();
+    const body = document.getElementById('post-body').value;
 
     if (title && body) {
-        const response = await fetch('/api/blog/', {
+        const response = await fetch('/api/post/', {
             method: 'POST',
             body: JSON.stringify({title, body}),
             headers: {'Content-Type': 'application/json'}
@@ -28,8 +28,8 @@ const newBlogHandle = async (e) => {
 const goToEdit = (e) => {
     e.preventDefault();
     console.log('click')
-    const blogId = Number(e.target.parentNode.dataset.blogid)
-    document.location.replace('/edit/' + blogId)
+    const postId = Number(e.target.parentNode.dataset.postid)
+    document.location.replace('/edit/' + postId)
 }
 
 window.addEventListener('DOMContentLoaded', (event) => {
@@ -38,4 +38,4 @@ window.addEventListener('DOMContentLoaded', (event) => {
     });
 });
 
-newBlogForm.addEventListener('submit', newBlogHandle)
+newPostForm.addEventListener('submit', newPostHandle)

@@ -1,0 +1,17 @@
+{{#if loggedIn}}
+
+<h1 class="display-2 text-center mt-2">Edit Your Post</h1>
+<div id="container" data-id="{{post.id}}" class="container bg-light mt-5 p-4">
+<div class="col text-center">
+    <form id="edit-post">
+    <p class="fs-1">Post Title</p>
+    <input class="form-control" type="text"  id="post-title" value="{{post.title}}">
+    <p class="fs-1">Post Body</p>
+    <textarea class="form-control" id="post-body" cols="30" rows="10">{{post.body}}</textarea>
+    <div></div>
+    <button class="btn btn-primary fs-2 ps-4 pe-4 m-3" type="submit">Update</button>
+    </form>
+</div>
+</div>
+<script src="../js/edit.js"></script>
+{{/if}}

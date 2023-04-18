@@ -1,22 +1,22 @@
-const editForm = document.getElementById('edit-blog')
+const editForm = document.getElementById('edit-post')
 
-const editBlogHandle = async (e) => {
+const editPostHandle = async (e) => {
     e.preventDefault();
 
-    const title = document.getElementById('blog-title').value.trim();
-    const body = document.getElementById('blog-body').value
+    const title = document.getElementById('post-title').value.trim();
+    const body = document.getElementById('post-body').value
     const idString = document.getElementById('container').dataset.id
     const id = Number(idString)
 
     if (title && body) {
-    const response = await fetch ('/api/blog/' + id, {
+    const response = await fetch ('/api/post/' + id, {
         method: 'PUT',
         body: JSON.stringify({title, body}),
         headers: {'Content-Type': 'application/json'}
     })
 
     if(response.ok) {
-        document.location.replace('/blog')
+        document.location.replace('/post')
     } else {
         alert('failed to edit')
     }
@@ -24,4 +24,4 @@ const editBlogHandle = async (e) => {
     }
 }
 
-editForm.addEventListener('submit', editBlogHandle)
+editForm.addEventListener('submit', editPostHandle)

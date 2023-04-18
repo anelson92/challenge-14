@@ -17,15 +17,15 @@ router.get('/login', async (req, res) => {
     res.render('login')
 })
 
-router.get('/blog', async (req, res) => {
+router.get('/post', async (req, res) => {
     try {
         const Posts = await Post.findAll({
             include: [{model: User}, {model: Comment}]
         })
-        const blogs = Posts.map((blog) =>
-      blog.get({ plain: true })
+        const blogs = Posts.map((post) =>
+      post.get({ plain: true })
         );
-        res.render('blog', {
+        res.render('post', {
         blogs,
         loggedIn: req.session.loggedIn
     })
@@ -34,32 +34,32 @@ router.get('/blog', async (req, res) => {
     }
 })
 
-router.get('/blog/:id', async (req, res) => {
+router.get('/post/:id', async (req, res) => {
     try {
-        const blogData = await Post.findByPk(req.params.id, {
+        const postData = await Post.findByPk(req.params.id, {
             include: [{model: User}, {model: Comment}]
         })
 
-        const blog = blogData.get({plain: true})
-        const blogComments = blog.comments;
+        const post = postData.get({plain: true})
+        const postComments = post.comments;
 
         let allComments = [];
         let allCommentUsers = [];
        
         try {
-            for(let i = 0; i < blog.comments.length; i++) {
+            for(let i = 0; i < post.comments.length; i++) {
                 let newUser = await User.findByPk(blog.comments[i].comment_user)
-                blog.comments[i].comment_username = newUser.dataValues.username
+                post.comments[i].comment_username = newUser.dataValues.username
             }         
         } catch (err) {
             res.status(500).json(err)
         }
 
-            let posterName = await User.findByPk(blog.blog_user_id)
+            let posterName = await User.findByPk(post.post_user_id)
             const username = posterName.username
 
 
-      res.render('singleblog', {blog, allCommentUsers, loggedIn: req.session.loggedIn, userId: req.session.userId, username: username})
+      res.render('singlepost', {post, allCommentUsers, loggedIn: req.session.loggedIn, userId: req.session.userId, username: username})
 
     } catch (err) {
         res.status(500).json(err)
@@ -69,23 +69,23 @@ router.get('/blog/:id', async (req, res) => {
 router.get('/dashboard', async (req, res) => {
     try {
         console.log(req.session.userId)
-        const usersBlogs = await Post.findAll({
+        const usersPosts = await Post.findAll({
             where: {
-                blog_user_id: req.session.userId
+                post_user_id: req.session.userId
             }
         })
-        let userBlogsData = [];
-        usersBlogs.forEach((userBlog) => {
-            userBlogsData.push({
-                title: userBlog.dataValues.title,
-                id: userBlog.dataValues.id,
-                body: userBlog.dataValues.body
+        let userPostsData = [];
+        usersPosts.forEach((userPost) => {
+            userPostsData.push({
+                title: userPost.dataValues.title,
+                id: userPost.dataValues.id,
+                body: userPost.dataValues.body
             })})
 
-            console.log(userBlogsData)
+            console.log(userPostsData)
 
 
-        res.render('dashboard', {usersBlogs: userBlogsData, 
+        res.render('dashboard', {usersPosts: userPostsData, 
             userId: req.session.userId, userName: req.session.username, loggedIn: req.session.loggedIn})
     } catch (err) {
 
@@ -94,13 +94,13 @@ router.get('/dashboard', async (req, res) => {
 
 router.get('/edit/:id', async (req, res) => {
     try {
-      const editBlog = await Post.findByPk(req.params.id)
+      const editPost = await Post.findByPk(req.params.id)
       
-      const editingBlog = editBlog.dataValues;
+      const editingPost = editPost.dataValues;
 
-     const blogIsUsers = editingBlog.blog_user_id === req.session.userId
+     const postIsUsers = editingPost.post_user_id === req.session.userId
 
-      res.render('edit', {blogIsUsers: blogIsUsers, blog: editingBlog, userId: req.session.userId, loggedIn: req.session.loggedIn})
+      res.render('edit', {postIsUsers: postIsUsers, post: editingPost, userId: req.session.userId, loggedIn: req.session.loggedIn})
 
     } catch (err) {
         res.status(500).json(err)
