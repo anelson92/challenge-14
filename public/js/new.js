@@ -1,4 +1,4 @@
-const newPostForm = document.querySelector('.new-post-form')
+const newPostForm = document.querySelector('#new-post-form')
 
 const newPostHandle = async (e) => {
     e.preventDefault();

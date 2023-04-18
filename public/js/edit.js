@@ -1,6 +1,6 @@
-const editForm = document.getElementById('edit-post')
+const editForm = document.getElementById('#edit-post')
 
-const editPostHandle = async (e) => {
+const editPostHandler = async (e) => {
     e.preventDefault();
 
     const title = document.getElementById('post-title').value.trim();
@@ -24,4 +24,4 @@ const editPostHandle = async (e) => {
     }
 }
 
-editForm.addEventListener('submit', editPostHandle)
+editForm.addEventListener('submit', editPostHandler)

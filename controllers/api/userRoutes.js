@@ -6,6 +6,7 @@ router.post('/', async (req, res) => {
   try {
     const newUser = await User.create({
         username: req.body.username,
+        email: req.body.email,
         password: req.body.password,
     });
     
@@ -18,6 +19,7 @@ router.post('/', async (req, res) => {
     })
 
   } catch (err) {
+    console.log(err)
     res.status(500).json(err);
   }
 });
@@ -28,23 +30,23 @@ router.post('/login', async (req, res) => {
   try {
     const userData = await User.findOne({ 
         where: { 
-            username: req.body.username 
-        } 
-    });
+            email: req.body.email
+        }
+    })
 
     if (!userData) {
       res
         .status(400)
-        .json({ message: 'Oops, that password or username is incorrect!' });
+        .json({ message: 'Oops, that password or email is incorrect!' });
       return;
     }
 
-    const validPassword = await userData.checkPassword(req.body.password);
+    const validPassword = userData.checkPassword(req.body.password);
 
     if (!validPassword) {
       res
         .status(400)
-        .json({ message: 'Oops, that password or username is incorrect!' });
+        .json({ message: 'Oops, that password or email is incorrect!' });
       return;
     }
 
@@ -53,11 +55,14 @@ router.post('/login', async (req, res) => {
       req.session.username = User.username;
       req.session.loggedIn = true;
       
-      res.json({ user: userData, message: 'You are now logged in!' });
-    });
-
+      res.status(200).json({user: userData, message: "You are now logged in!"})
+    })
+    
   } catch (err) {
-    res.status(400).json({ message: 'No user found with those credentials.'});
+    res
+      .status(400)
+      .json({ message: 'No user found with those credentials.'});
+    console.log(err)
   }
 });
 
