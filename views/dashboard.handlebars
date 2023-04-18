@@ -1,0 +1,36 @@
+{{#if loggedIn}}
+    <h1 class="display-1 text-center mb-3">Dashboard</h1>
+    <div id="userId" data-user="{{userId}}"></div>
+    <div class="container">
+
+    <div class="row">
+
+    <div class="col m-5 bg-light text-center">
+        <h1 class="display-5 mb-3">Write A New Post</h1>
+        <p class="fs-2">Blog Title</p>
+        <form class="new-blog-form">
+        <input type="text" id="blog-title" class="form-control" placeholder="Blog Title">
+        <p class="fs-2">Blog Body</p>
+        <textarea class="form-control p-2 mb-2" placeholder="Blog Body" id="blog-body"></textarea>
+        <div>
+        <button class="btn btn-primary fs-2 ps-4 pe-4 mb-4" type="submit" id="blog-post-btn">Post</button>
+        </div>
+        </form>
+    </div>
+
+    <div class="col m-5 bg-light text-center">
+        <h1 class="display-5 mb-3">Edit Existing Posts</h1>
+        {{#each usersPosts as |post|}}
+        <div data-postid="{{{post.id}}}">
+        <h3>{{{blog.title}}}</h3>
+        <button class="btn btn-primary" id="edit-btn">Edit</button>
+        <button class="btn btn-primary" id="del-btn">Delete</button>
+        </div>
+        {{/each}}
+    </div>
+
+    </div>
+    </div>
+    <script src="./js/newblog.js"></script>
+    <script src="./js/deleteBlog.js"></script>
+{{/if}}

@@ -1,0 +1,28 @@
+
+<div class="p-5 m-5 bg-light text-center rounded-3">
+    <h1 class="display-1">{{blog.title}}</h1>
+    <h5 class="display-6">By: {{username}} on {{post.date}}</h5>
+    <p class="fs-3">{{post.body}}</p>
+ </div>   
+    <div class="p-5 m-5 bg-light text-center rounded-3">
+    <h5 class="display-4">Comments</h5>
+
+    {{#each post.comments as |comment|}}
+    <div class="col">
+        <div class="bg-secondary p-2 m-5 text-center text-white rounded-4">
+        <p class="fs-4">{{comment.comment_body}} -{{comment.comment_username}}</p>
+        </div>
+    </div>
+    {{/each}}
+    </div>
+    {{#if loggedIn}}
+        <form data-postid="{{post.id}}" data-userid="{{userId}}" id="comment-form">
+            <div class="input-group p-5 mb-3">
+                <textarea id="comment-body" class="form-control" aria-label="With textarea" placeholder="Leave a comment!"></textarea>
+                <button type="submit" class="btn btn-primary">Comment</button>
+            </div>
+        </form>
+    <script src="../js/comment.js"></script>
+    {{/if}}
+</div>
+
